@@ -1,0 +1,82 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 600px;
+    min-height: 400px;
+    background-color: aliceblue;
+    height: 100%;
+}
+
+}
+
+
+#main>.title {
+    margin: 10px 10px;
+}
+
+.modal {
+    padding: 10px;
+    position: absolute;
+    margin: -250px 0 0 -250px;
+    top: 50%;
+    left: 50%;
+    min-width: 600px;
+    min-height: 500px;
+    border: 1px solid #000000;
+    z-index: 10;
+    background-color: aliceblue;
+    
+    /* うまくいかない 
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    */
+}
+
+.modal>div>textarea {
+    margin-top: 3px;
+}
+
+.label1 {
+    display: inline-block;
+    width: 80px;
+}
+
+.overlay {
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+/*    display: none; */
+    z-index: 5;
+}
+
+#trade-list {
+    border-collapse: collapse;
+    background-color: white
+}
+#trade-list th, td {
+    border: 1px solid #000000;
+    padding: 10px;
+}
+#trade-list-box {
+    margin: 10px auto;
+    height: 80%;
+    width: 65%;
+    overflow: scroll;
+}
+
+.minus {
+    color: red;
+}
+
+.margin-left10>* {
+    margin-left: 10px;
+}

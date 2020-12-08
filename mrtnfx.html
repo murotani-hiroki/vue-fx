@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuex@latest"></script>
+
+<link rel="stylesheet" href="mrtnfx.css">    
+
+</head>
+<body>
+<div id="main">
+<h1 class="title">じどりのFX</h1>
+<div class="margin-left10" style="display:flex">
+    <input type="text" id="from" v-model.lazy="range.from"><span>〜</span><input type="text" v-model.lazy="range.to">
+    <button id="search" v-on:click="load">search</button>
+    <button v-on:click="modalOpenNew">add</button>
+    <button v-on:click="deleteTrades">delete</button>
+</div>
+
+<div class="margin-left10" style="margin-top: 10px;">
+<span style="">損益合計</span>
+<span v-bind:class="{ minus : totalYen < 0 }">¥{{totalYen}}</span>
+<span v-bind:class="{ minus : totalDollar < 0 }">${{totalDollar}}</span>
+</div>
+
+<div id="trade-list-box">
+<table id="trade-list">
+    <th></th>
+    <th>取引日</th>
+    <th>決済日</th>
+    <th>通過ペア</th>
+    <th>Ask/Bid</th>
+    <th>数量</th>
+    <th>Entry</th>
+    <th>Exit</th>
+    <th>S/L</th>
+    <th>損益</th>
+    <th><input type="checkbox" @click="selectAll"></th>
+    <tr v-for="trade in trades" v-bind:key="trade.id">
+        <td><a href="#" v-on:click="modalOpen($event)">{{ trade.id }}</a></td>
+        <td>{{ trade.entryDate }}</td>
+        <td>{{ trade.exitDate }}</td>
+        <td>{{ trade.pair }}</td>
+        <td>{{ trade.type }}</td>
+        <td>{{ trade.amount }}</td>
+        <td>{{ trade.entry }}</td>
+        <td>{{ trade.exit }}</td>
+        <td>{{ trade.stoploss }}</td>
+        <td><span v-bind:class="{ minus : trade.profit < 0 }">{{ trade.profit }}</span></td>
+        <td><input type="checkbox" v-bind:value="trade.id" v-model="selectedTrades"></td>
+    </tr>
+</table>
+</div>
+
+<modal-window ref='modal' @modal-close="load"></modal-window>
+</div>
+
+<!-- モーダルウィンドウ -->
+<script type="text/x-template" id="modal">
+<div>    
+<div class="modal" v-show="modalVisible">
+    <div><div class="label1">ID</div><span>{{trade.id}}</span></div>
+    <div><div class="label1">取引日</div><input type="text" id="entryDate" v-model.lazy="trade.entryDate"></div>
+    <div><div class="label1">決済日</div><input type="text" id="exitDate" v-model.lazy="trade.exitDate"></div>
+    <div>
+        <div class="label1">通貨ペア</div>
+        <select id="pair" v-model="trade.pair">
+            <option v-for="currency in currencies" :value="currency">{{currency}}</option>
+        </select>
+    </div>
+    <div>
+        <div class="label1">ask/bid</div>
+        <input type="radio" id="type" value="ask" v-model="trade.type">ask
+        <input type="radio" id="type" value="bid" v-model="trade.type">bid
+    </div>
+    <div><div class="label1">数量</div><input type="text" id="amount" v-model.lazy="trade.amount"></div>
+    <div><div class="label1">Entry</div><input type="text" id="entry" v-model.lazy="trade.entry"></div>
+    <div><div class="label1">Exit</div><input type="text" id="exit" v-model.lazy="trade.exit"></div>
+    <div><div class="label1">S/L(pips)</div><input type="text" id="stoploss" v-model.lazy="trade.stoploss"></div>
+    <div><div class="label1">損益</div><input type="text" id="profit" v-model.lazy="trade.profit"></div>
+    <div><div class="label1">コメント</div><textarea cols=60 rows=10 id="comment" v-model.lazy="trade.comment"></textarea></div>
+    <div>
+        <div class="label1">画像</div><input type="text" id="img" v-model.lazy="imageFile"><button v-on:click="addImage">＋</button> 
+        <span v-for="img in imageFiles">
+            <a v-bind:href="'upload/' + img" target="_blank">{{img}}</a>
+            <a href="#" v-on:click="deleteImage(img)">×</a>
+            &nbsp;&nbsp;
+        </span>
+    </div>
+    <div style="margin-top: 10px"><button v-on:click="save">save</button></div>
+</div>
+<div class="overlay" v-show="modalVisible" v-on:click="modalClose"></div>
+</div>
+</script>
+
+<script src="mrtnfx.js"></script>
+</body>
+</html>
